@@ -1,0 +1,54 @@
+
+create table PRODUCTO(
+ IdProducto int primary key identity,
+ CodigoBarra varchar(10),
+ Descripcion varchar(50),
+ Precio Decimal(10,2)
+)
+
+insert into PRODUCTO(CodigoBarra,Descripcion,Precio) values
+('PRD00001','Globos 12 pokas',3.5),
+('PRD00002','Sticker Mickey',2.7),
+('PRD00003','Movil de Ben 10',14.2),
+('PRD00004','Plato de Spiderman',20.40),
+('PRD00005','Mantel de Batman',15.50),
+('PRD00006','Vaso de Hulk',15.60),
+('PRD00007','Cinta para Cajas',4.90),
+('PRD00008','Lapiceros GH115',3.80),
+('PRD00009','Goma David',5.20),
+('PRD00010','Borradores Faber',4.50),
+('PRD00011','Temperas Loro',7.80),
+('PRD00012','Cuadernos Rayados',4.70),
+('PRD00013','Plumones Castell',6.90),
+('PRD00014','Cartulina Verde',2.30),
+('PRD00015','Linterna Recargable 15P',12.40),
+('PRD00016','Foco Voltech',7.40),
+('PRD00017','Placa para Antena',20.40),
+('PRD00018','Pernos de Retención',2.30),
+('PRD00019','Tornillo de Acero',2.20),
+('PRD00020','Pulsera Rosa',3.20),
+('PRD00021','Plastilina ECO',11.40),
+('PRD00022','Tinta de Impresora',23.70),
+('PRD00023','Martillo de juguete',3.90),
+('PRD00024','Paquete de Hilos',6.60),
+('PRD00025','Calculadora Personal',5.40),
+('PRD00026','Corrector Liquido',6.90)
+
+select * from PRODUCTO
+
+
+create procedure sp_busqueda_productos(
+@busqueda varchar(20)
+)
+as
+begin
+
+--El operador LIKE nos sirve para encontrar coincidencias dentro de una cadena de texto
+
+	select IdProducto,concat(CodigoBarra,' - ',Descripcion,' - S/.',Precio)[Texto],Precio,Descripcion from PRODUCTO 
+	where concat(CodigoBarra,' - ',Descripcion,' - S/.',Precio) like '%'+ @busqueda + '%'
+end
+
+
+exec sp_busqueda_productos '17'
+

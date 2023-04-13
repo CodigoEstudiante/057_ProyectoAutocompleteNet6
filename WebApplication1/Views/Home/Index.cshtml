@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>*@
+
+ 
+<!--  GOOGLEAR CARD BOOTSTRAP 5 -->
+<!--  GOOGLEAR FORM BOOTSTRAP 5 -->
+
+<!--  GOOGLEAR Input group BOOTSTRAP 5 -->
+<!--  GOOGLEAR icon BOOTSTRAP 5 -->
+
+<!--  GOOGLEAR TABLE BOOTSTRAP 5 -->
+<style>
+     .ui-autocomplete {
+    max-height: 120px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+</style>
+        <div class="card">
+            <div class="card-header">
+                Autocompletado
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label class="form-label">Buscar Producto:</label>
+                          @*<input type="text" class="form-control" id="txtproducto">*@
+                          <div class="input-group mb-3">
+                             
+                              <input type="text" class="form-control" id="txtbuscar">
+                              <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="tbproductos">
+                          <thead class="table-dark ">
+                            <tr>
+                              <th scope="col">Producto</th>
+                              <th scope="col">Precio</th>
+                              <th scope="col">Cantidad</th>
+                              <th scope="col">Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+@section Scripts{
+  <script>
+      
+     $(document).ready(function(){
+
+$.ajax({
+  type: 'get',
+  url: 'http://localhost:5124/api/Producto/Lista',
+  success: function (data) {
+ 									console.log(data)
+                },
+});
+
+       $( "#txtbuscar" ).autocomplete({
+          source: function( request, response ) {
+                          $.ajax( {
+              url: "@Url.Action("BusquedaProducto","Home")?busqueda=" + request.term,
+              dataType: "json",
+              success: function( data ) {
+                response( data );
+              }
+            } );
+
+          },
+          minLength: 1,
+          select: function( event, ui ) {
+
+            console.log( ui );
+
+            $("#tbproductos tbody").append(
+                $("<tr>").append(
+                    $("<td>").text(ui.item.descripcion),
+                    $("<td>").text(ui.item.precio),
+                    $("<td>").text(1),
+                    $("<td>").text(ui.item.precio * 1),
+                )
+            )
+
+            event.preventDefault();
+            $(this).val("");
+          },
+          focus: function(event, ui) {
+             event.preventDefault();
+             $(this).val(ui.item.label);
+          }
+
+
+        } );
+
+
+     })
+
+  </script>
+
+}
